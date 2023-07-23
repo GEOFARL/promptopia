@@ -23,18 +23,22 @@ const Feed = () => {
   const [posts, setPosts] = useState([]);
   const [displayedPosts, setDisplayedPosts] = useState([]);
 
-  const handleSearchChange = (e) => {
-    setSearchText(e.target.value);
+  const filterPosts = (value) => {
+    setSearchText(value);
 
     const filteredPosts = posts.filter((p) => {
       return (
-        p.prompt.includes(e.target.value) ||
-        p.tag.includes(e.target.value) ||
-        p.creator.username.includes(e.target.value)
+        p.prompt.includes(value) ||
+        p.tag.includes(value) ||
+        p.creator.username.includes(value)
       );
     });
 
     setDisplayedPosts(filteredPosts);
+  };
+
+  const handleSearchChange = (e) => {
+    filterPosts(e.target.value);
   };
 
   useEffect(() => {
@@ -62,7 +66,10 @@ const Feed = () => {
         />
       </form>
 
-      <PromptCardList data={displayedPosts} handleTagClick={() => {}} />
+      <PromptCardList
+        data={displayedPosts}
+        handleTagClick={(tag) => filterPosts(tag)}
+      />
     </section>
   );
 };

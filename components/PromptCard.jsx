@@ -12,6 +12,17 @@ const PromptCard = ({ post, handleTagClick, handleEdit, handleDelete }) => {
   const pathname = usePathname();
   const router = useRouter();
 
+  const handleViewProfile = async () => {
+    console.log(session);
+    if (post?.creator?._id.toString() === session?.user?.id.toString()) {
+      router.push('/profile');
+      return;
+    }
+    router.push(
+      `/profile/${post?.creator?._id}?name=${post?.creator?.username}`
+    );
+  };
+
   const handleCopy = () => {
     setCopied(post.prompt);
     navigator.clipboard.writeText(post.prompt);
@@ -30,7 +41,7 @@ const PromptCard = ({ post, handleTagClick, handleEdit, handleDelete }) => {
             className="rounded-full"
           />
 
-          <div className="flex flex-col">
+          <div className="flex flex-col" onClick={handleViewProfile}>
             <h3 className="font-satoshi font-semibold text-gray-900">
               {post.creator.username}
             </h3>
